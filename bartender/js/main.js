@@ -6,6 +6,7 @@ function preload() {
 
 function create() {
 
+	game.stage.backgroundColor = 'rgb(90,90,90)';
 }
 
 function update() {
