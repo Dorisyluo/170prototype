@@ -59,6 +59,10 @@ Play.prototype = {
     	this.customerTimer = game.time.create(false);
 		this.customerTimer.loop(Phaser.Timer.SECOND * 2, arrival, this);
 		this.customerTimer.start();
+
+		//indicator for current bullet
+		this.currentBullet= new Phaser.Rectangle(550, 500, 30, 75)
+
 	},
 	update:function() {
 
@@ -118,8 +122,11 @@ Play.prototype = {
 		}
 		//-------------------checks for rolling the revolver
 	},
+
+	//display inidcator for current bullet
 	render:function() {
 		//for debugging purposes, add code here
+		game.debug.geom(this.currentBullet,"#ff00ff",false);
 	}
 }
 
