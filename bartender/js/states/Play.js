@@ -111,6 +111,11 @@ Play.prototype = {
 
 			game.input.mouse.wheelDelta = 0;
 		}
+
+		game.world.bringToTop(this.barcounter);
+		for (var x = 0; x < 6; x ++) {
+			game.world.bringToTop(this.barrel[x]);
+		}
 		//-------------------checks for rolling the revolver
 	},
 	render:function() {
@@ -129,7 +134,7 @@ function arrival () {
 	for (var x = 0; x < 5; x++) {
 		if (this.customers[seats[x]] == null) {
 			customerArray[seats[x]] = Phaser.ArrayUtils.getRandomItem(this.customerTypes);
-			var person = game.add.sprite(70 + (135 * seats[x]), 220, customerArray[seats[x]]);
+			var person = game.add.sprite(70 + (135 * seats[x]), 225, customerArray[seats[x]]);
 			this.customers[seats[x]] = person;
 			person.inputEnabled = true;
 			person.events.onInputDown.add(serveListener, this, this.customers, this.barrel, seats[x]);
