@@ -1,14 +1,17 @@
-var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'Game');
 
-function preload() {
+game.state.add('Play', Play);
+game.state.start('Play');
 
-}
+// function preload() {
 
-function create() {
+// }
 
-	game.stage.backgroundColor = 'rgb(90,90,90)';
-}
+// function create() {
 
-function update() {
+// 	game.stage.backgroundColor = 'rgb(90,90,90)';
+// }
 
-}
+// function update() {
+
+// }
