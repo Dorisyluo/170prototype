@@ -8,6 +8,8 @@ var customerArray = [null , null, null, null, null];
 var reloadFlag = false;
 //flag for cooldown timer
 var canReload = true;
+//flag for emp cooldown timer
+var canEmp = true;
 
 var Play = function(game) {
 };
@@ -15,7 +17,7 @@ var Play = function(game) {
 Play.prototype = {
 	init:function() {
 		//NOTE: add hologram later
-		this.customerTypes = ['bulletman', 'drinkman', 'shotman'];
+		this.customerTypes = ['bulletman', 'drinkman', 'shotman', 'holoman'];
 		this.barrel = Phaser.ArrayUtils.numberArray(0, 5);
 		this.customers = Phaser.ArrayUtils.numberArray(0, 4);
 		for (var x = 0; x < 5; x++) {
@@ -35,6 +37,7 @@ Play.prototype = {
 		game.load.image('drink', 'assets/img/drink.png');
 		game.load.image('shot', 'assets/img/shot.png');
 		game.load.image('empty', 'assets/img/empty.png');
+		game.load.image('emp', 'assets/img/emp.png');
 
 		//customer types; kept as separate assets instead of an atlas for convenience
 		//NOTE: if not convenient at all, please notify one of the programmers to change it to an atlas
@@ -54,6 +57,11 @@ Play.prototype = {
 		this.background = game.add.sprite(0, 0, 'background');
 		this.barcounter = game.add.sprite(0, 400, 'barcounter');
 
+		//creates emp button and listener
+		this.emp = game.add.sprite(50, 450, 'emp');
+		this.emp.inputEnabled = true;
+		this.emp.events.onInputDown.add(empListener, this, this.customers);
+
 		//loads up and display initial bullets
 		reload(this.barrel);
 
@@ -63,7 +71,7 @@ Play.prototype = {
 		this.customerTimer.start();
 
 		//indicator for current bullet
-		this.currentBullet= new Phaser.Rectangle(550, 500, 30, 75)
+		this.currentBullet = new Phaser.Rectangle(550, 500, 30, 75)
 
 	},
 	update:function() {
@@ -122,10 +130,21 @@ Play.prototype = {
 			game.input.mouse.wheelDelta = 0;
 		}
 
+		//makeshift cooldown indicator for emp
+		if (!canEmp) {
+			this.emp.tint = 0xff0000;
+		}
+		else {
+			this.emp.tint = 0xffffff;
+		}
+
+		//brings respective assets in front of spawned customers
 		game.world.bringToTop(this.barcounter);
 		for (var x = 0; x < 6; x ++) {
 			game.world.bringToTop(this.barrel[x]);
 		}
+		game.world.bringToTop(this.emp);
+
 		//-------------------checks for rolling the revolver
 	},
 
@@ -178,7 +197,27 @@ function serveListener(game, customers, barrel, index) {
 	}
 }
 
+//listens for emp button press
+function empListener(game, customers) {
+	if (canEmp) {
+		for (var x = 0; x < 5; x++) {
+			if (customerArray[x] == 'holoman') {
+				customerArray[x] = null;
+				this.customers[x].destroy();
+				this.customers[x] = null;
+			}
+		}
+		canEmp = false;
+		this.time.events.add(Phaser.Timer.SECOND * 20, empCooldown, this);
+	}
+}
+
 //function for reload cooldown timer
 function reloadCooldown(){
 	canReload = true;
+}
+
+//function for emp cooldown timer
+function empCooldown() {
+	canEmp = true;
 }
