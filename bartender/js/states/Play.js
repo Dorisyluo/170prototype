@@ -6,6 +6,8 @@ var customerArray = [null , null, null, null, null];
 
 //flags for keystrokes so they only register once while being held
 var reloadFlag = false;
+//flag for cooldown timer
+var canReload = true;
 
 var Play = function(game) {
 };
@@ -69,8 +71,12 @@ Play.prototype = {
 		//checks for reload---------------------------------
 		//MAPPING: 'R' key
 		if(game.input.keyboard.isDown(Phaser.Keyboard.R)) {
-			if (!reloadFlag) {
+			if (!reloadFlag && canReload) {
 				reload(this.barrel);
+				//cooldown timer for reloading
+				this.time.events.add(Phaser.Timer.SECOND * 5, reloadCooldown, this);
+				canReload = false;
+			    
 			}
 			reloadFlag = true;
 		}
@@ -170,4 +176,9 @@ function serveListener(game, customers, barrel, index) {
 		bulletArray[0] = 'empty';
 		customerArray[index] = null;
 	}
+}
+
+//function for reload cooldown timer
+function reloadCooldown(){
+	canReload = true;
 }
