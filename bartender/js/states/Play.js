@@ -71,7 +71,7 @@ Play.prototype = {
 		this.customerTimer.start();
 
 		//indicator for current bullet
-		this.currentBullet = new Phaser.Rectangle(550, 500, 30, 75)
+		this.currentBullet = new Phaser.Rectangle(550, 400, 30, 75)
 
 	},
 	update:function() {
@@ -180,7 +180,7 @@ function reload(barrel) {
 	var bulletTypes = ['bullet', 'drink', 'shot'];
 	for (var x = 0; x < 6; x++) {
 		bulletArray[x] = Phaser.ArrayUtils.getRandomItem(bulletTypes);
-		barrel[x] = game.add.sprite(550 + (40 * x), 500, bulletArray[x]);
+		barrel[x] = game.add.sprite(550 + (40 * x), 400, bulletArray[x]);
 	}
 }
 
@@ -191,7 +191,7 @@ function serveListener(game, customers, barrel, index) {
 		this.customers[index].destroy();
 		this.customers[index] = null;
 		this.barrel[0].destroy();
-		this.barrel[0] = this.game.add.sprite(550, 500, 'empty');
+		this.barrel[0] = this.game.add.sprite(550, 400, 'empty');
 		bulletArray[0] = 'empty';
 		customerArray[index] = null;
 	}
