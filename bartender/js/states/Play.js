@@ -3,6 +3,8 @@
 //global arrays to keep track of type identifications
 var bulletArray = ['empty', 'empty', 'empty', 'empty', 'empty', 'empty'];
 var customerArray = [null , null, null, null, null];
+var score = 0;
+var scoreText;
 
 //flags for keystrokes so they only register once while being held
 var reloadFlag = false;
@@ -72,6 +74,9 @@ Play.prototype = {
 
 		//indicator for current bullet
 		this.currentBullet = new Phaser.Rectangle(550, 400, 30, 75)
+
+		//Score Text
+		scoreText = game.add.text(25, 25, "Score: $0");
 
 	},
 	update:function() {
@@ -194,6 +199,8 @@ function serveListener(game, customers, barrel, index) {
 		this.barrel[0] = this.game.add.sprite(550, 400, 'empty');
 		bulletArray[0] = 'empty';
 		customerArray[index] = null;
+		score += 50;
+		scoreText.setText('Score: $' + score);
 	}
 }
 
